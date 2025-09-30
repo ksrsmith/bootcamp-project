@@ -1,20 +1,19 @@
 using System.Diagnostics;
 using BootcampProject.Web.Models;
+using BootcampProject.Web.Models.EntityModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BootcampProject.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(BootcampProjectContext context) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        private readonly BootcampProjectContext _context = context;
 
         public IActionResult Index()
         {
+            string recipeNames = string.Join(", ", _context.Recipes.Select(r => r.Name).ToList());
+
+            ViewBag.Recipes = recipeNames;
             return View();
         }
 
